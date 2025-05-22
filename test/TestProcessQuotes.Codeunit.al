@@ -2,7 +2,6 @@ namespace Vjeko.Demos.Test;
 
 using Vjeko.Demos;
 using System.TestLibraries.Utilities;
-using Microsoft.Sales.Document;
 
 codeunit 60003 "Test - ProcessQuotes"
 {
@@ -20,33 +19,31 @@ codeunit 60003 "Test - ProcessQuotes"
     [Test]
     procedure ProcessQuotes_FindsNothing_DoesNothing()
     var
-        Mock: Codeunit "MockProcessQuotes";
-        SalesQuote: Record "Sales Header";
+        MockProcessQuotes: Codeunit ProcessQuotesMock;
     begin
         // Assemble
-        Mock.SetResult_FindQuotes(false);
+        MockProcessQuotes.SetExpected_FindQuotes(false);
 
         // Act
-        SUT.ProcessQuotes(Mock);
+        SUT.ProcessQuotes(MockProcessQuotes);
 
         // Assert
-        Assert.IsFalse(Mock.IsInvoked_MakeAndPostOrders(), 'MakeAndPostOrders should not be invoked');
+        Assert.IsFalse(MockProcessQuotes.IsInvoked_MakeAndPostOrders(), 'MakeAndPostOrders should not be invoked');
     end;
 
     [Test]
     procedure ProcessQuotes_FindsQuotes_MakesAndPostsOrders()
     var
-        Mock: Codeunit "MockProcessQuotes";
-        SalesQuote: Record "Sales Header";
+        MockProcessQuotes: Codeunit ProcessQuotesMock;
     begin
         // Assemble
-        Mock.SetResult_FindQuotes(true);
+        MockProcessQuotes.SetExpected_FindQuotes(true);
 
         // Act
-        SUT.ProcessQuotes(Mock);
+        SUT.ProcessQuotes(MockProcessQuotes);
 
         // Assert
-        Assert.IsTrue(Mock.IsInvoked_MakeAndPostOrders(), 'MakeAndPostOrders should be invoked');
+        Assert.IsTrue(MockProcessQuotes.IsInvoked_MakeAndPostOrders(), 'MakeAndPostOrders should be invoked');
     end;
 
 }
